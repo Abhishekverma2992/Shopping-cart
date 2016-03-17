@@ -1,0 +1,18 @@
+<div>
+     <table id="holder">
+          <tr>
+            <th>Name</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Remove</th>
+          </tr>
+          <tr ng-repeat = "book in con.cart">
+            <td><img id="Cartbooks" ng-src="{{book.img}}"/><br/> {{book.name}}</td>
+            <td><span>{{book.quantity}}</span></td>
+            <td>{{book.newPrice}}</td>
+            <td><i ng-click="con.remove(book)" class="glyphicon glyphicon-minus"></i></td>
+          </tr>
+          <!-- <tr><td>Total</td><td></td><td></td><td>{{$scope.totalGetPrice()}}</td></tr> -->
+           <tr><td></td><td></td><td><img id="addtocart" ng-src="addtocart.jpg"/></td></tr>
+        </table>
+        </div>

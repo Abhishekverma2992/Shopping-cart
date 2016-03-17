@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html ng-app="shoppingCart">
+
+<head>
+  <title>AvShoppingMart</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
+  <script src="AvShoppingMart_support.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-route.js"></script>
+  <link rel="stylesheet" type="text/css" href="AvShoppingMart.css" />
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
+  <style>
+
+  li img {
+    margin-right: 10px;
+    margin-left: 10px;
+    width: 100px;
+    height: 170px;
+  }
+  
+  .link {
+    color: red;
+  }
+  </style>
+</head>
+
+<body ng-controller="myController">
+
+  <header><b> <font size="5"> WELCOME TO SHOPPING CART</font></b></header>
+  <ul class="navigation">
+    <li><a href="#home">HOME</a></li>
+    <li><a href="#aboutUs">AboutUs</a></li>
+    <li><a href="#contactUs">contactUs</a></li>
+    <li><a href="#cart">Cart <i class="glyphicon glyphicon-shopping-cart"> {{cart.length}}</i></a></li>
+  </ul>
+  <select ng-change="handleChange()" ng-model="option" placeholder="select you choice">
+    <option id="menu" ng-repeat="options in optionList">
+      {{options}}
+    </option>
+  </select>
+  <div ng-view> </div>
+  <!-- <div>
+  <ul>
+    <li id="view"ng-repeat="book in list">
+      <a href="#" ng-click="edit(book)"> <img src="{{book.img}}" /></a>
+      <span class="link"> *click on book image to edit information</span>
+      <div layout="column" layout-align="start end" class="ng-scope layout-column layout-align-start-end">
+        <div>NAME= {{book.name | uppercase}} </br>
+        </div>
+        <div>PRICE= {{book.price | currency:"Rs. "}}</br>
+        </div>
+        <div>WRITERS NAME= {{book.writer | uppercase}} </br>
+        </div>
+        <div> DESCRIPTION={{book.description}}</div>
+    </li>
+  </ul>
+  <div id="view" ng-repeat="book in bookItems.books">
+    <img id="books" ng-src="{{book.img}}" />
+    <div ng-click='$scope.addToCart(book)'>
+      <form name="myForm">
+    </div>
+    <div id="discriptionCont">
+      <div>NAME:{{book.name | uppercase}} </br>
+        </div>
+        <div>PRICE:{{book.price | currency:"Rs. "}}</br>
+        </div>
+        <div>WRITERS NAME:{{book.writer | uppercase}} </br>
+        </div>
+        <div> DESCRIPTION:{{book.description}}</div>
+      <br/>
+  <a href="#" ng-click="addToCart(book)"><img id="addtocart" ng-src="addtocart.jpg" /></a>
+
+    </div>
+  </div>
+  </div> -->
+  <input type="text", placeholder="search your product" ng-model="search">
+  <div >
+    <ul>
+      <li id="view" ng-repeat="book in items.books | filter:search">
+        <img id="show" ng-src="{{book.img}}" />
+        <div id="discriptionCont">
+          NAME:{{book.name | uppercase}} </br>
+          PRICE:{{book.price | currency:"Rs. "}}</br>
+          WRITERS NAME:{{book.writer | uppercase}} </br>
+          DESCRIPTION:{{book.description}}
+          <a href="#" ng-click="addToCart(book)"><img id="addtocart" ng-src="addtocart.jpg" /></a>
+      </li>
+      </ul>
+      </div>
+
+      <li id="view" ng-repeat="phones in items.electronics |  filter:search">
+        <img id="show" ng-src="{{phones.img}}" />
+        <div id="discriptionCont">
+          NAME:{{phones.name | uppercase}} </br>
+          PRICE:{{phones.price | currency:"Rs. "}}
+          <a href="#" ng-click="addToCart(book)"><img id="addtocart" ng-src="addtocart.jpg" /></a>
+      </li>
+
+      <li id="view" ng-repeat="car in items.cars |  filter:search">
+        <img id="show" ng-src="{{car.img}}" />
+        <div id="discriptionCont">
+          NAME:{{car.name | uppercase}} </br>
+          MODEL:{{car.model |uppercase}}</br>
+          PRICE:{{car.price | currency:"Rs. "}}
+          <a href="#" ng-click="addToCart(book)"><img id="addtocart" ng-src="addtocart.jpg" /></a>
+      </li>
+    </ul>
+    </div>
+    <div>
+     <table id="holder" border="1">
+          <tr>
+            <th>Name</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Remove</th>
+          </tr>
+          <tr ng-repeat = "product in cart">
+            <td><img id="Cartbooks" ng-src="{{product.img}}"/><br/> NAME: {{product.name}}</td>
+            <td><span>{{product.quantity}}</span></td>
+            <td>{{product.newPrice}}</td>
+            <td><i ng-click="remove(product)" class="glyphicon glyphicon-minus"></i></td>
+          </tr>
+          <tr></tr>
+
+          <tr><th>Total:</th><td></td><td></td><td>{{totalPrice()}}</td></tr>
+           <tr><td></td><td></td><td><img id="addtocart" ng-src="addtocart.jpg"/></td></tr>
+        </table>
+        </div>
+
+
+
+
+    <div ng-hide="editedUser==undefined">
+      NAME=
+      <input type="text" value="{{current.name}}" ng-model="editedUser.name" />
+      </br>
+      PRICE=
+      <input type="number" value="{{current.price}}" ng-model="editedUser.price" />
+      </br>
+      WRITER=
+      <input type="text" value="{{current.writer}}" ng-model="editedUser.writer" />
+      </br>
+      DESCRIPTION=
+      <input type="text" value="{{current.description}}" ng-model="editedUser.description" />
+      <button ng-click="cancel()">Cancel</button>
+      <button ng-click="save(editedUser)">Save</button>
+    </div>
+    <!-- <form>
+        <div ng-if="showMe">
+        NAME= <input type="text" value="{{" "}}" ng-model="newUser.name"/></br>
+        PRICE= <input type="number" value="{{" "}}" ng-model="newUser.price" /></br>
+        WRITER= <input type="text" value="{{" "}}" ng-model="newUser.writer"/></br>
+        DESCRIPTION= <input type="text" value="{{" "}}" ng-model="newUser.description"/>
+        <button ng-click="saveBook()"> saveBook</button>
+
+        </div>
+        <button ng click="showMeField()"> addBook</button>
+        <button ng-click="addToCart()">AddToCart</button>
+  </form> -->
+    <!--    <tr ng-repeat = "book in $scope.cart">
+            <td><img id="Cartbooks" ng-src="{{book.image}}"/><br/> {{book.title}}</td>
+            <td><span>{{book.quantity}}</span></td>
+            <td>{{book.newPrice}}</td>
+            </tr>
+ -->
+</body>
+
+</html>
